@@ -1,0 +1,72 @@
+<html lang="en">
+  <head>
+  </head>
+
+  <body>
+    <input id="sort" type="button" value="Sort" />
+    <input id="add" type="button" value="Add" />
+    <input id="add2" type="button" value="Add (semi optimised)" />
+    <input id="add3" type="button" value="Add (optimised)" />
+
+    <script type="text/javascript">
+
+      function createAndSort() {
+        var numbers = [];
+        for (var i=0; i < 1000000; i++) {
+          numbers.push(Math.floor(Math.random() * 50000) + 1);
+        }
+
+        numbers.sort(function sortNumber(a, b) {
+          return a - b;
+        });
+
+        console.log('Numbers: ', numbers);
+      }
+
+      function addHellos() {
+        for (var i=0; i < 1000; i++) {
+          var element = document.createElement('div');
+          document.body.appendChild(element);
+          element.innerText = 'Hello World';
+          console.log('Offset Top: ', element.offsetTop);
+        }
+      }
+
+      // requestAnimationFrame still has 2 reflows
+      function setElementTextSemiOptimised(element) {
+        console.log('Offset Top: ', element.offsetTop);
+      }
+
+      function addHellosSemiOptimised() {
+        for (var i=0; i < 1000; i++) {
+          var element = document.createElement('div');
+          document.body.appendChild(element);
+          element.innerText = 'Hello World';
+          requestAnimationFrame(setElementTextSemiOptimised.bind(null, element));
+        }
+      }
+
+      // split up reflows
+      function setElementText(element) {
+        element.innerText = 'Hello World';
+        requestAnimationFrame(function() {
+          console.log('Offset Top: ', element.offsetTop);
+        });
+      }
+
+      function addHellosOptimised() {
+        for (var i=0; i < 1000; i++) {
+          var element = document.createElement('div');
+          document.body.appendChild(element);
+          requestAnimationFrame(setElementText.bind(null, element));
+        }
+      }
+
+      document.getElementById('sort').addEventListener('click', createAndSort);
+      document.getElementById('add').addEventListener('click', addHellos);
+      document.getElementById('add2').addEventListener('click', addHellosSemiOptimised);
+      document.getElementById('add3').addEventListener('click', addHellosOptimised);
+
+    </script>
+  </body>
+</html>
