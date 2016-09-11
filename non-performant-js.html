@@ -4,6 +4,7 @@
 
   <body>
     <input id="sort" type="button" value="Sort" />
+    <input id="sort2" type="button" value="Sort (optimised)" />
 
     <script type="text/javascript">
 
@@ -20,7 +21,18 @@
         console.log('Numbers: ', numbers);
       }
 
+      function optimisedCreateAndSort() {
+        var worker = new Worker('js/worker.js');
+        worker.onmessage = function(e) {
+          console.log('Numbers: ', e.data);
+          worker.terminate();
+        }
+        worker.postMessage();
+      }
+
       document.getElementById('sort').addEventListener('click', createAndSort);
+      document.getElementById('sort2').addEventListener('click', optimisedCreateAndSort);
+
 
     </script>
   </body>
