@@ -1,0 +1,27 @@
+<html lang="en">
+  <head>
+  </head>
+
+  <body>
+    <input id="sort" type="button" value="Sort" />
+
+    <script type="text/javascript">
+
+      function createAndSort() {
+        var numbers = [];
+        for (var i=0; i < 1000000; i++) {
+          numbers.push(Math.floor(Math.random() * 50000) + 1);
+        }
+
+        numbers.sort(function sortNumber(a, b) {
+          return a - b;
+        });
+
+        console.log('Numbers: ', numbers);
+      }
+
+      document.getElementById('sort').addEventListener('click', createAndSort);
+
+    </script>
+  </body>
+</html>
